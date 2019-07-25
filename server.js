@@ -6,7 +6,7 @@ const methodOverride = require('method-override')
 const config = require('./config/database.config')
 const mongoose = require('mongoose')
 const fileUpload = require('express-fileupload');
-const PORT = process.env.PORT || 8090;
+const PORT = process.env.PORT || 8080;
 
 const passport = require("passport");
 //const users = require("./routes/route");
@@ -32,11 +32,10 @@ app.use('/public', express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // ... other app.use middleware 
-app.use(express.static(path.join(__dirname, "client", "build")))
+//app.use(express.static(path.join(__dirname, "client", "build")))
 
 // Passport config
 require("./config/passport/passport_cooker")(passport);
-require("./config/passport/passport_particular")(passport);
 require('./routes/route')(app);
 mongoose.Promise = global.Promise;
 mongoose.connect(config.url, {
@@ -55,14 +54,14 @@ app.use(passport.initialize());
 //app.use("/api/users", users);
 
 app.get('/', (req, res) => {
-    res.json({"message": "Welcome to Shop app"});
+    res.json({"message": "Welcome to Cook app"});
 });
 
 // Right before your app.listen(), add this:
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
+// app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+// });
 
 app.listen(PORT, () => {
-    console.log("Server is listening on port 8080");
+    console.log("Server is listening on port " + PORT);
 });

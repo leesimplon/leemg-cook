@@ -3,11 +3,15 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const AtelierSchema = new Schema({
-  cooker: {
-    type: Schema.Types.ObjectId,
-    ref: "cookers"
-  },
+  // cooker: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: "cookers"
+  // },
   _id: {
+    type: Number,
+    required: true
+  },
+  idCook: {
     type: Number,
     required: true
   },
@@ -28,7 +32,7 @@ const AtelierSchema = new Schema({
     required: true
   },
   duration: {
-    type: Number,
+    type: String,
     required: true
   },
   dispo: {
@@ -37,6 +41,7 @@ const AtelierSchema = new Schema({
   },
   reserve: {
     type: Number,
+    default:0,
     required: true
   },
   price: {
@@ -45,10 +50,14 @@ const AtelierSchema = new Schema({
   },
   image: {
     type: String
+  },
+  visible:{
+    type: Boolean,
+    default: true
   }
 },
 {
     timestamps: true
 });
 
-module.exports = Product = mongoose.model("atelier", AtelierSchema);
+module.exports = Product = mongoose.model("ateliers", AtelierSchema);
