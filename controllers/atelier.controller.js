@@ -182,35 +182,19 @@ exports.update = (req, res) => {
 
 };
 
-/*
-// Update a atelier identified by the atelierId in the request
-exports.updateReserve = (req, res) => {
-    
-    // Find atelier and update it with the request body
-    Atelier.findByIdAndUpdate(req.params.atelierId, {
-        
-        reserve:+1       
-    }, {new: true})
-    .then(atl => {
-        if(!atl) {
-            return res.status(404).send({
-                message: "Atelier not found with id " + req.params.atelierId
-            });
-        }
-        res.send(atl);
-    }).catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "Atelier not find with id " + req.params.atelierId + err.stack
-            });                
-        }
-        return res.status(500).send({
-            message: "Error updating atelier with id " + req.params.atelierId
-        });
-    });
-};*/
+//// Update the visibility of an atelier identified by the atelierId in the request
+exports.visibilite = (req,res)=>{
+    Atelier.findById(req.params._id).then(answer=>{
+        Atelier.findOneAndUpdate({_id:req.params.atelierId}, {
 
-// Delete a atelier with the specified atelierId in the request
+            visible:!answer.visible
+
+        },{new:true}).then(upd=>res.send(upd)
+        )
+    })
+}
+
+
 exports.delete = (req, res) => {
     Atelier.findByIdAndRemove(req.params.atelierId)
         .then(atelier => {

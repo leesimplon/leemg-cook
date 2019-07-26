@@ -17,8 +17,12 @@ module.exports = (app) => {
     app.get('/api/ateliers', atelier.findAll);
     app.get('/api/atelier/:atelierId', atelier.findOne);
     app.get('/api/ateliers/:idCook', atelier.findAllCook);
-    app.get('/atelier/:image', atelier.readImage);
+    app.get('/api/imatelier/:image', atelier.readImage);
 
     app.put('/api/ateliers/:atelierId', atelier.update);
+    app.get('/api/atelievu/:atelierId', atelier.visibilite);
+
+
     app.delete('/api/ateliers/:atelierId', atelier.delete);
+
 }

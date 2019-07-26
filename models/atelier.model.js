@@ -13,7 +13,7 @@ const AtelierSchema = new Schema({
   },
   idCook: {
     type: Number,
-    required: true
+    // required: true
   },
   title: {
     type: String,
