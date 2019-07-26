@@ -24,7 +24,6 @@ const CookerSchema = new Schema({
   },
   specialite: {
     type: String,
-    default: "",
     required: false
   }
 },

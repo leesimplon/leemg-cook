@@ -11,10 +11,7 @@ const AtelierSchema = new Schema({
     type: Number,
     required: true
   },
-  idCook: {
-    type: Number,
-    // required: true
-  },
+  idUser: Number,
   title: {
     type: String,
     required: true
@@ -32,7 +29,7 @@ const AtelierSchema = new Schema({
     required: true
   },
   duration: {
-    type: String,
+    type: Number,
     required: true
   },
   dispo: {
@@ -41,8 +38,7 @@ const AtelierSchema = new Schema({
   },
   reserve: {
     type: Number,
-    default:0,
-    required: true
+   required: true
   },
   price: {
     type: Number,
@@ -51,13 +47,14 @@ const AtelierSchema = new Schema({
   image: {
     type: String
   },
-  visible:{
-    type: Boolean,
-    default: true
-  }
+  visibilite: Boolean,
 },
+ 
 {
     timestamps: true
 });
 
-module.exports = Product = mongoose.model("ateliers", AtelierSchema);
+module.exports = Product = mongoose.model("atelier", AtelierSchema);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+// mongoose.set('useCreateIndex', true

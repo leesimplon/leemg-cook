@@ -2,15 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 // Create Schema
 const ParticularSchema = new Schema({
-  // atelier: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "ateliers"
-  // },
   _id: {
-    type: Number,
-    required: true
-  },
-  idAtel: {
     type: Number,
     required: true
   },
@@ -26,6 +18,10 @@ const ParticularSchema = new Schema({
     type: String,
     required: true
   },
+  // password: {
+  //   type: String,
+  //   required: true
+  // },
   phone: {
     type: String,
     required: false

@@ -5,24 +5,21 @@ module.exports = (app) => {
 
     //route cookers
     app.post('/api/cookers/login', cuisinier.authentifie);
-    app.post('/api/cookers/register', cuisinier.inscrire);   
-
+    app.post('/api/cookers/register', cuisinier.inscrire);  
+    //visibilte atelier 
+app.get('/masque/:_id',atelier.masquer);
+app.get('/afficher/:_id',atelier.gestion);
     //route particuls
-    //app.post('/api/partics/login', particulier.authentifie);
-    app.post('/api/partics/attend', particulier.enregistre);  
+    // app.post('/api/login', particulier.authentifie);
+    app.post('/register/:_id', particulier.inscrire);  
   
     //route ateliers
     app.post('/api/ateliers', atelier.create);
-
     app.get('/api/ateliers', atelier.findAll);
-    app.get('/api/atelier/:atelierId', atelier.findOne);
-    app.get('/api/ateliers/:idCook', atelier.findAllCook);
-    app.get('/api/imatelier/:image', atelier.readImage);
-
-    app.put('/api/ateliers/:atelierId', atelier.update);
-    app.get('/api/atelievu/:atelierId', atelier.visibilite);
-
-
+    app.get('/api/ateliers/:atelierId', atelier.findOne);
+    app.get('/atelier/:image', atelier.readImage);
+    app.put('/api/ateliers/:profilId', atelier.update);
     app.delete('/api/ateliers/:atelierId', atelier.delete);
 
+    app.get('/api/atelier/:idUser', atelier.findOne);
 }
