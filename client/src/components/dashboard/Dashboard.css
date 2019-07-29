@@ -1,0 +1,30 @@
+#couleur{
+    background-color: #d05c62!important;
+}
+.dash{
+    margin: 0 auto;   
+   }
+
+.navside{    
+    background-color: #d05c62;
+    width: 300px;
+    height: 100%;
+    position: fixed;
+    top:0;
+    left:0;
+}
+nav ul{
+    list-style-type: none;
+    margin-left: -40; 
+}
+
+
+nav li:hover{
+    background-color:#d4d4d4; 
+}
+
+nav Link{
+    text-decoration: none;
+    color: #ffffff;
+
+}

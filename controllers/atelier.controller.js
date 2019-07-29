@@ -13,9 +13,8 @@ exports.create = (req, res) => {
             } else {
                 idautom = parseInt(atel[atel.length - 1]._id) + 1
             }
-
             
-
+                console.log(req.files)
             let imageFile = req.files.image;
             let nomImg = idautom;
             imageFile.mv(`${__dirname}/public/${nomImg}.jpg`, function (err) {
@@ -24,26 +23,28 @@ exports.create = (req, res) => {
                 }
             });
 
-            console.log(req.files);
+            
             const atelier = new Atelier({
 
-                _id: idautom,
+                _id: idautom,                
                 title: req.body.title,
+                idCooker: req.body.idCooker,
                 description:req.body.description,
                 date: req.body.date,
                 hour:req.body.hour,
                 duration:req.body.duration,
-                dispo:req.body.dispo,
-                reserve:req.body.reserve,
+                dispo:req.body.dispo ,
+                reserve:req.body.reserve || 0 ,
                 price: req.body.price,
+                visible: true,
                 image: '' + nomImg + '.jpg'
             });
-
+//console.log(atelier.hasOwnProperty("reserve"))
             // Save Atelier in the database
             atelier.save()
-                .then(data => {
+                .then(data => { console.log('reussi')
                     res.send(data);
-                }).catch(err => {
+                }).catch(err => {console.log('non reussi,',err)
                     res.status(500).send({
                         message: "Some error occurred while creating the Atelier."
                     });
@@ -53,7 +54,7 @@ exports.create = (req, res) => {
 
 // Retrieve and return all ateliers from the database.
 exports.findAll = (req, res) => {
-    Atelier.find()
+    Atelier.find({visible:"true"})
     .then(ateliers => {
         res.send(ateliers);
     }).catch(err => {
@@ -85,6 +86,32 @@ exports.findOne = (req, res) => {
     });
 };
 
+//idCooker
+exports.findAllCook = (req, res) => {
+    Atelier.find({idCooker:req.params.cookerId})
+        .then(atelier => {
+            //console.log(unprofil)
+            if (!atelier) {
+                return res.status(404).send({
+                    message: "atelier not found with id" + req.params.cookerId
+                });
+            }
+            else {
+                res.send(atelier);
+            }
+
+        }).catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "atelier not found with id " + req.params.cookerId
+                });
+            }
+            return res.status(500).send({
+                message: "Something wrong retrieving atelier with id " + req.params.cookerId
+            });
+        });
+};
+
 //Read image of atelier
 exports.readImage =(req, res) =>{
     try {
@@ -92,7 +119,7 @@ exports.readImage =(req, res) =>{
         res.write(picture)
         res.end()
     } catch (e) {
-        console.log("Hey Lee, an error was found: ", e.stack);
+        console.log("Something wrong, an error was found: ", e.stack);
     }
 }
 
@@ -100,50 +127,105 @@ exports.readImage =(req, res) =>{
 // Update a atelier identified by the atelierId in the request
 exports.update = (req, res) => {
     // Validate Request
-    if(!req.body.title && !req.body.description && !req.body.date && !req.body.hour && !req.body.dispo && !req.body.reserve && !req.body.duration && !req.body.price && !req.files.image) {
-        return res.status(400).send({
-            message: "No atelier field can not be empty"
-        });
-    }
-
-    let imageFile = req.files.image;
-    let nomImg = req.params.atelierId;
-    imageFile.mv(`${__dirname}/public/${nomImg}.jpg`, function (err) {
-        if (err) {
-            return res.status(500).send("string");
-        }
-    });
-
-    // Find atelier and update it with the request body
-    Atelier.findByIdAndUpdate(req.params.atelierId, {
-        title: req.body.title,
-        description: req.body.description,
-        date: req.body.date,
-        hour: req.body.hour,
-        duration: req.body.duration,
-        dispo: req.body.dispo,
-        reserve: req.body.reserve,
-        price: req.body.price,
-        image: '' + nomImg + '.jpg'        
-    }, {new: true})
-    .then(atl => {
-        if(!atl) {
-            return res.status(404).send({
-                message: "Atelier not found with id " + req.params.atelierId
+    // if(!req.body.title && !req.body.description && !req.body.date && !req.body.hour && !req.body.dispo && !req.body.reserve && !req.body.duration && !req.body.price && !req.files.image) {
+    //     return res.status(400).send({
+    //         message: "No atelier field can not be empty"
+    //     });
+    // }
+    Atelier.findById(req.params.atelierId)
+        .then(res => {
+            console.log(res);
+            let imageFile = req.files.image;
+            let nomImg = req.params.atelierId;
+            imageFile.mv(`${__dirname}/public/${nomImg}.jpg`, function (err) {
+                if (err) {
+                    return res.status(500).send("string");
+                }
             });
-        }
-        res.send(atl);
-    }).catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "Atelier not found with id " + req.params.atelierId
-            });                
-        }
-        return res.status(500).send({
-            message: "Error updating atelier with id " + req.params.atelierId
-        });
-    });
+
+            // Find atelier and update it with the request body
+            Atelier.findByIdAndUpdate(req.params.atelierId, {
+                title: req.body.title || res.title,
+                description: req.body.description || res.description,
+                date: req.body.date || res.date,
+                hour: req.body.hour || res.hour,
+                duration: req.body.duration || res.duration,
+                dispo: req.body.dispo || res.dispo,
+                reserve: req.body.reserve || res.reserve,
+                price: req.body.price || res.price,
+                visible: req.body.visible || res.visible,
+                image: '' + nomImg + '.jpg' || res.image
+            }, { new: true , useFindAndModify: false})
+                .then(atl => {
+                    if (!atl) {
+                        return res.status(404).send({
+                            message: "Atelier not found with id " + req.params.atelierId
+                        });
+                    }
+                    res.send(atl);
+                }).catch(err => {
+                    if (err.kind === 'ObjectId') {
+                        return res.status(404).send({
+                            message: "Atelier not found with id " + req.params.atelierId
+                        });
+                    }
+                    return res.status(500).send({
+                        message: "Error updating atelier with id " + req.params.atelierId
+                    });
+                });
+        }).catch(err => {
+            console.log(err.kind + ' and ' + err.stack);
+
+        })
+
+
 };
+
+    // // Validate Request
+    // if(!req.body.title && !req.body.description && !req.body.date && !req.body.hour && !req.body.dispo && !req.body.reserve && !req.body.duration && !req.body.price && !req.files.image) {
+    //     return res.status(400).send({
+    //         message: "No atelier field can not be empty"
+    //     });
+    // }
+
+    // let imageFile = req.files.image;
+    // let nomImg = req.params.atelierId;
+    // imageFile.mv(`${__dirname}/public/${nomImg}.jpg`, function (err) {
+    //     if (err) {
+    //         return res.status(500).send("string");
+    //     }
+    // });
+
+    // // Find atelier and update it with the request body
+    // Atelier.findByIdAndUpdate(req.params.atelierId, {
+    //     title: req.body.title,
+    //     description:req.body.description,
+    //     date: req.body.date,
+    //     hour:req.body.hour,
+    //     duration:req.body.duration,
+    //     dispo:req.body.dispo,
+    //     reserve:req.body.reserve,
+    //     price: req.body.price,
+    //     image: '' + nomImg + '.jpg'       
+    // }, {new: true})
+    // .then(atl => {
+    //     if(!atl) {
+    //         return res.status(404).send({
+    //             message: "Atelier not found with id " + req.params.atelierId
+    //         });
+    //     }
+    //     res.send(atl);
+    // }).catch(err => {
+    //     if(err.kind === 'ObjectId') {
+    //         return res.status(404).send({
+    //             message: "Atelier not found with id " + req.params.atelierId
+    //         });                
+    //     }
+    //     return res.status(500).send({
+    //         message: "Error updating atelier with id " + req.params.atelierId
+    //     });
+    // });
+
 
 // Delete a atelier with the specified atelierId in the request
 exports.delete = (req, res) => {
@@ -166,3 +248,28 @@ exports.delete = (req, res) => {
         });
     });
 };
+
+//Desactivier
+
+exports.masquer = (req,res)=>{
+    // router.get("/ateliermasquer/:_id",(req,res)=>{
+        
+        
+        Atelier.findOneAndUpdate({_id:req.params.atelierId}, { 
+            
+            visible: false
+            
+            
+        },{new:true}).then(statu=>res.send(statu)
+        
+        )
+
+    }
+
+exports.afficher = (req,res) => {
+        Atelier.findOneAndUpdate({_id:req.params.atelierId}, {
+            visible:true
+
+        },{new:true}).then(statu=>res.send(statu)
+        )
+    }

@@ -8,33 +8,35 @@ module.exports = function validateRegisterInput(data) {
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   data.password_confirm = !isEmpty(data.password_confirm) ? data.password_confirm : "";
+  
 // Name checks
   if (Validator.isEmpty(data.name)) {
-    errors.name = "Name field is required";
+    errors.name = "Nom requis";
   }
 // Firstname checks
 if (Validator.isEmpty(data.firstname)) {
-  errors.firstname = "Firstname field is required";
+  errors.firstname = "Prénom requis";
 }
 // Email checks
   if (Validator.isEmpty(data.email)) {
-    errors.email = "Email field is required";
+    errors.email = "Email requis";
   } else if (!Validator.isEmail(data.email)) {
-    errors.email = "Email is invalid";
+    errors.email = "Email invalide";
   }
 // Password checks
   if (Validator.isEmpty(data.password)) {
-    errors.password = "Password field is required";
+    errors.password = "Mot de passe requis;
   }
 if (Validator.isEmpty(data.password_confirm)) {
-    errors.password_confirm = "Confirm password field is required";
+    errors.password_confirm = "Mot de passe de confirmation requis";
   }
 if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
-    errors.password = "Password must be at least 6 characters";
+    errors.password = "Mot de passe doit être au mois 6 caractères";
   }
 if (!Validator.equals(data.password, data.password_confirm)) {
-    errors.password_confirm = "Passwords must match";
+    errors.password_confirm = "Les mots de passe doivent correspondre";
   }
+
 return {
     errors,
     isValid: isEmpty(errors)

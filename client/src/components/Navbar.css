@@ -1,0 +1,13 @@
+.navbar-brand {
+
+    width:80px;
+}
+
+h1{
+ color: #f3671f;
+ font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.navbar-expand-lg{
+    height: 100px;
+}

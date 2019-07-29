@@ -1,0 +1,15 @@
+#couleur{
+    background-color: #d05c62!important;
+    color: #ffffff;
+}
+#couleur:hover{
+    background-color: #f3671f!important;
+}
+.champs[input]:focus{
+    color: #d05c62 !important;
+    background-color: #f3671f;
+}
+.formatelier{
+    background-color: #d05c62;
+    display: inline-block;
+}

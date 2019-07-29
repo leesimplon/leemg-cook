@@ -6,7 +6,7 @@ const methodOverride = require('method-override')
 const config = require('./config/database.config')
 const mongoose = require('mongoose')
 const fileUpload = require('express-fileupload');
-const PORT = process.env.PORT || 8090;
+const PORT = process.env.PORT || 8080;
 
 const passport = require("passport");
 //const users = require("./routes/route");
@@ -16,7 +16,6 @@ const path = require("path")
 
 
 
-// ...
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
@@ -38,24 +37,24 @@ app.use(express.static(path.join(__dirname, "client", "build")))
 require("./config/passport/passport_cooker")(passport);
 require("./config/passport/passport_particular")(passport);
 require('./routes/route')(app);
-mongoose.Promise = global.Promise;
-mongoose.connect(config.url, {
-    useNewUrlParser: true
-}).then(() => {
-    console.log("Successfully connected to the database");  
-}).catch(err => {
-    console.log('Could not connect to the database. Exiting now...', err);
-    process.exit();
-});
+const db = require("./config/database.config");
+// Connect to MongoDB 
+
+mongoose.connect(db.mongoURI,{ useNewUrlParser: true })
+  .then(() => console.log("MongoDB successfully connected"))
+  .catch(err => console.log(err));
 
 // Passport middleware
 app.use(passport.initialize());
 
-// Routes
-//app.use("/api/users", users);
+// serve up static assets (usually on heroku)
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static("clients/build"));
+}
+
 
 app.get('/', (req, res) => {
-    res.json({"message": "Welcome to Shop app"});
+    res.json({"message": "bienvenue sur Atelier App"});
 });
 
 // Right before your app.listen(), add this:
@@ -64,5 +63,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log("Server is listening on port 8080");
+    console.log("Server is listening on port "+ PORT);
 });

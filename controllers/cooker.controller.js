@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/database.config");
 // Load input validation
-const validateRegisterInput = require("../validation/register");
+//const validateRegisterInput = require("../validation/register");
 const validcookeroginInput = require("../validation/login");
 // Load Cooker model
 const Cooker = require("../models/cooker.model");
@@ -22,17 +22,12 @@ exports.inscrire = (req, res) => {
                 idautom = parseInt(cooker[cooker.length - 1]._id) + 1
             }
   
-    // Form validation
-  const { errors, isValid } = validateRegisterInput(req.body);
-  // Check validation
-    if (!isValid) {
-      return res.status(400).json(errors);
-    }
+  
     Cooker.findOne({ email: req.body.email }).then(cooker => {
   
 
       if (cooker) {
-        return res.status(400).json({ email: "Email already exists" });
+        return res.status(400).json({ email: "L'email existe déjà" });
       } else {
         const newCooker = new Cooker({
           _id: idautom,
@@ -45,7 +40,8 @@ exports.inscrire = (req, res) => {
   // Hash password before saving in database
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newCooker.password, salt, (err, hash) => {
-            if (err) throw err;
+            console.log('reussi,')
+            if (err) throw err ;
             newCooker.password = hash;
             newCooker
               .save()
@@ -74,7 +70,7 @@ exports.authentifie = (req, res) => {
   Cooker.findOne({ email }).then(cooker => {
       // Check if cooker exists
       if (!cooker) {
-        return res.status(404).json({ emailnotfound: "Email not found" });
+        return res.status(404).json({ emailnotfound: "Email non trouvé" });
       }
   // Check password
       bcrypt.compare(password, cooker.password).then(isMatch => {
@@ -94,6 +90,8 @@ exports.authentifie = (req, res) => {
             },
             (err, token) => {
               res.json({
+                id:cooker._id,
+                name: cooker.name,
                 success: true,
                 token: "Bearer " + token
               });
@@ -102,7 +100,7 @@ exports.authentifie = (req, res) => {
         } else {
           return res
             .status(400)
-            .json({ passwordincorrect: "Password incorrect" });
+            .json({ passwordincorrect: "Mot de passe incorrect" });
         }
       });
     });

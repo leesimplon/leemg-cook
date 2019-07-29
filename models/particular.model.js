@@ -6,6 +6,10 @@ const ParticularSchema = new Schema({
     type: Number,
     required: true
   },
+  idAtel:{
+    type: Number,
+    required: true
+  },
   name: {
     type: String,
     required: true
@@ -15,10 +19,6 @@ const ParticularSchema = new Schema({
     required: true
   },
   email: {
-    type: String,
-    required: true
-  },
-  password: {
     type: String,
     required: true
   },
