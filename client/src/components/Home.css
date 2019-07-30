@@ -7,12 +7,12 @@ body, html {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;   
-    height: 700px;  
+    height: 600px;  
     background-attachment: fixed;
     }
 
 .message{
-    padding-top: 150px;
+    padding-top: 100px;
     padding-bottom:50px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: "bold";
