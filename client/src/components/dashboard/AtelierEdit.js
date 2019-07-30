@@ -18,9 +18,8 @@ export default class AtelierEdit extends Component {
     
     
       componentDidMount() {
-        axios.get('http://localhost:8080/api/atelier/' + this.props.match.params.atelierId)
+        axios.get('https://leemg-cook.herokuapp.com/api/atelier/' + this.props.match.params.atelierId)
           .then(response => {
-            console.log('i am a response', response)
             this.setState({ titre: response.data.title });
             this.setState({ desc: response.data.description });
             this.setState({ dat: response.data.date });
@@ -45,7 +44,8 @@ export default class AtelierEdit extends Component {
     
       handleUploadImage(ev) {
         ev.preventDefault();
-    
+        
+        
         const data = new FormData();
         data.append('image', this.uploadInput.files[0]);
         data.append('title',this.state.title);
@@ -57,13 +57,13 @@ export default class AtelierEdit extends Component {
         data.append('reserve',this.state.reserve||0);
         data.append('price',this.state.price);
         data.append('visible',this.state.visible);
-        
-        fetch('http://localhost:8080/api/ateliers/'+ this.props.match.params.atelierId, {
+        console.log(data);
+        fetch('https://leemg-cook.herokuapp.com/api/ateliers/'+ this.props.match.params.atelierId, {
           method: 'PUT',
           body: data,
         }).then((response) => {
           response.json().then((body) => {
-            this.setState({ image: `http://localhost:8080/api/ateliers/${body.image}` });
+            this.setState({ image: `https://leemg-cook.herokuapp.com/api/ateliers/${body.image}` });
             
           });
         });
@@ -77,13 +77,13 @@ export default class AtelierEdit extends Component {
                 <MDBCard width="100%">
                   <MDBCardBody>
                     <form  onSubmit={this.handleUploadImage}>
-                    <Link to="/dashboard"><p>Retour</p></Link>
+                    <Link to="/dashboard"><p>Retour au dashboard</p></Link>
                       <p className="h4 text-center py-4">Modifier un atelier </p>
-
+                      <p>*Les anciennes valeurs sont sur les labels, vous pouvez les copier si vous ne voulez pas changer le valeur d'un champs</p>
                       <div className="orange-text">
                         <MDBInput
                           className="champs"
-                          label={this.state.titre}
+                          label={"Titre: "+this.state.titre}
                           group
                           type="text"
                           error="incorrecte"
@@ -93,10 +93,10 @@ export default class AtelierEdit extends Component {
                         />
                         <MDBInput
                         className="champs"
-                          label="Déscription"
+                          label={"Description: "+this.state.desc}
                           group
                           type="textarea"
-                          validate
+                          
                           error="incorrecte"
                           required="false"
                           placeholder={this.state.desc}
@@ -104,10 +104,10 @@ export default class AtelierEdit extends Component {
                         />
                         <MDBInput
                         className="champs"
-                          label="Date"
+                          label={"Date: "+this.state.dat}
                           group
                           type="date"
-                          validate
+                          
                           error="incorrecte"
                           required="false"
                           placeholder={this.state.dat}
@@ -115,10 +115,10 @@ export default class AtelierEdit extends Component {
                         />
                          <MDBInput
                          className="champs"
-                          label="Horaire début"
+                          label={"Heure début: "+this.state.heure}
                           group
                           type="time"
-                          validate
+                          
                           error="incorrecte"
                           required="false"
                           placeholder={this.state.heure}
@@ -126,10 +126,10 @@ export default class AtelierEdit extends Component {
                         />
                          <MDBInput
                          className="champs"
-                          label="Durée"
+                          label={"Durée: "+this.state.dure}
                           group
                           type="text"
-                          validate
+                          
                           error="incorrecte"
                           required="false"
                           placeholder={this.state.dure}
@@ -137,10 +137,10 @@ export default class AtelierEdit extends Component {
                         />
                          <MDBInput
                          className="champs"
-                          label="Nombre de place disponible"
+                          label={"Place disponible: "+this.state.disp}
                           group
                           type="number"
-                          validate
+                          
                           error="incorrecte"
                           required="false"
                           placeholder={this.state.disp}
@@ -149,35 +149,35 @@ export default class AtelierEdit extends Component {
     
                         <MDBInput
                          className="champs"
-                          label="Nombre de place résérvé(s)"
+                          label={"Réservation: "+this.state.resa}
                           group
                           type="number"
                           max={this.state.dispo}
                           required="false"
-                          validate
+                          
                           error="incorrecte"
                           placeholder={this.state.resa}
                           success="bien" value={this.state.value} onChange={this.onChange}  name="reserve"
                         />
                         <MDBInput
                         className="champs"
-                          label="Prix"
+                          label={"Prix: "+this.state.prix}
                           group
                           type="number"
-                          validate
+                          
                           error="incorrecte"
                           required="false"
                           placeholder={this.state.prix}
                           success="bien" value={this.state.value} onChange={this.onChange}  name="price"
                         />
-                        <span>
+                        <div>
                             <label>Visibilité : </label>
-                            <select name="visible" default="true" value={this.state.value}  onChange={this.onChange}>
+                            <select className="browser-default custom-select" name="visible" value={this.state.value}  onChange={this.onChange}>
                               <option value="true">Activé</option>
                               <option value="false">Désactivé</option>                            
                             </select><br/> 
                             
-                        </span>
+                        </div>
                       <label>Images de l'atelier : </label><br/>                     
                       <span> <input required="false" ref={(ref) => { this.uploadInput = ref; }} type="file" name="image" /></span>
                       </div>

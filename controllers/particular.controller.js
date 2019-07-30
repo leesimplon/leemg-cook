@@ -57,14 +57,6 @@ exports.enregistre = (req, res) => {
 
               })
 
-            // Atelier.findByIdAndUpdate(req.body.idAtel, {reserve: + 1})
-            //     .then(resp => {
-            //         res.send(resp)
-            //     }).catch(err => {
-            //         console.log(err);
-
-            //     })
-
           })
           .catch(err => {
             res.status(500).send({

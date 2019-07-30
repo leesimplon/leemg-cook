@@ -32,7 +32,7 @@ export default class AtelierInscrive extends Component {
         data.append('email',this.state.mail);
         data.append('phone',this.state.date);
       
-        fetch('http://localhost:8080/api/partics/attend', {
+        fetch('https://leemg-cook.herokuapp.com/api/partics/attend', {
           method: 'POST',
           body: data,
         });

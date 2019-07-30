@@ -12,7 +12,7 @@ export default class AtelierCuisinier extends Component {
 
     }
     componentDidMount() {
-        axios.get('http://localhost:8080/api/ateliercook/'+this.props.match.params.cookerId)
+        axios.get('https://leemg-cook.herokuapp.com/api/ateliercook/'+this.props.match.params.cookerId)
             .then(response => {
                 console.log('Atelier tableau :', response.data)
                 this.setState({ atelier: response.data });
@@ -25,7 +25,7 @@ export default class AtelierCuisinier extends Component {
     liste() {
         return <div>
             <div className="table-responsive">
-            <Link to="/dashboard"><p>Retour</p></Link>
+            <Link to="/dashboard"><p>Retour au dashboard</p></Link>
                     <h4>Mes atéliers</h4>
                 <table className="table table-striped table-bordered" id="table">
                     <thead>
@@ -47,7 +47,7 @@ export default class AtelierCuisinier extends Component {
                     <tbody>
                         {
                             (this.state.atelier.length > 0) ? (this.state.atelier.map((obj) => {
-                                var a = "http://localhost:8080/atelier/"+obj.image
+                                var a = "https://leemg-cook.herokuapp.com/atelier/"+obj.image
                                 return <tr key={obj._id}>
                                    
                                     <td>{obj.title}</td>

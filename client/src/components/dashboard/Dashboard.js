@@ -9,12 +9,15 @@ class Dashboard extends Component {
   render() {
     const { cooker } = this.props.auth;
     return (
-      <div className="dash">        
-        <nav className="navside">
-          <p className="flow-text grey-text text-darken-1">
+      <div className="dash">   
+          <p className="flow-text grey-text text-darken-1 right">
             Bonjour, <b>{cooker.name.split(" ")[0]}</b><br/>
             Vous êtes connecté.
-          </p>
+            <p>Cliquez sur les boutons pour effectuer vos opérations</p> 
+          </p> 
+             
+        <nav className="navside">
+         
           <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
                   <Link to={"/ajout-atelier/" + cooker.id} className="btn btn-light">

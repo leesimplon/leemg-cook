@@ -48,15 +48,17 @@ class AtelierAdd extends React.Component {
     data.append('price',this.state.price);
     data.append('visible',true);
   
-    fetch('http://localhost:8080/api/ateliers', {
+    fetch('https://leemg-cook.herokuapp.com/api/ateliers', {
       method: 'POST',
       body: data,
     }).then((response) => {
       response.json().then((body) => {
-        this.setState({ image: `http://localhost:8080/api/ateliers/${body.image}` });
+        this.setState({ image: `https://leemg-cook.herokuapp.com/api/ateliers/${body.image}` });
         
       });
+      
     });
+    
   }
 
   render() {
@@ -67,7 +69,7 @@ class AtelierAdd extends React.Component {
             <MDBCard width="100%">
               <MDBCardBody>
                 <form  onSubmit={this.handleUploadImage}>
-                <Link to="/dashboard"><p>Retour</p></Link>
+                <Link to="/dashboard"><p>Retour au dashboard</p></Link>
                   <p className="h4 text-center py-4">Ajouter un atelier </p>
                   <div className="orange-text">
                     <MDBInput
