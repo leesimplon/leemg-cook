@@ -9,10 +9,9 @@ const FooterPage = () => {
             <div className="row">
               <div className="col l6 s12">
                 <h5 className="white-text">À propos</h5>
-                <p className="white-text text-lighten-3">Centre de formation pour enfants à
-              partir de 12 ans</p>
+                
                 <p className="white-text text-lighten-3">Nous avons lancé cette application pour permettre aux particuliers de 25 à 35 ans de s'inscrire à nos atéliers.</p> 
-                <p className="white-text text-lighten-3">Non seulement vous aurez des bonnes connaissances en art culinaires, mais aussi votre inscription contribuera à booster notre activité.</p>
+                <p className="white-text text-lighten-3">Vous aurez des bonnes connaissances en art culinaires, et votre inscription contribuera à booster cette activité.</p>
               </div>
               <div className="col l4 offset-l2 s12">
                 <h5 className="white-text">Liens pour mobiles</h5>

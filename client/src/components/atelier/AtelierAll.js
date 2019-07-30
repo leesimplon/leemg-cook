@@ -10,7 +10,7 @@ export default class AtelierAll extends Component {
   }
   componentDidMount() {
     axios
-      .get("http://localhost:8080/api/ateliers")
+      .get("https://leemg-cook.herokuapp.com/api/ateliers")
       .then(response => {
         console.log("Atelier tableau :", response.data);
         this.setState({ atelier: response.data });
@@ -27,7 +27,7 @@ export default class AtelierAll extends Component {
           ? this.state.atelier.map(obj => {
               console.log(obj.titre);
 
-              var a = "http://localhost:8080/atelier/" + obj.image;
+              var a = "https://leemg-cook.herokuapp.com/atelier/" + obj.image;
 
               return (
                 <div class="col s12 m7" key={obj._id}>
